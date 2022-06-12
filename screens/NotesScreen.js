@@ -38,6 +38,7 @@ export default function NotesScreen({ navigation, route }) {
                 notes 
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT,
+                startingTime TEXT,
                 done INT);`
         );
       },
@@ -62,18 +63,20 @@ export default function NotesScreen({ navigation, route }) {
 
   useEffect(() => {
     //code that will happen when route.params change
-    if (route.params?.text) {
+    console.log("yayy");
+    if (route.params[0]?.text) {
       db.transaction(
         (tx) => {
-          tx.executeSql("INSERT INTO notes (done, title) VALUES (0, ?)", [
-            route.params.text,
-          ]);
+          tx.executeSql(
+            "INSERT INTO notes (done, title, startingTime) VALUES (0, ?, ?)",
+            [route.params[0].text, route.params[0].startingTime]
+          );
         },
         null,
         refreshNotes
       ); //the ? represent the sql parameter that we passed in using [route.params.text]
     }
-  }, [route.params?.text]);
+  }, [route.params[0]?.text]);
   //if route.params doesnt exist then it will return undefined. So we need to check if it exists before we can use it.
   //if it does exit it will keep going down the list of parameteers
 
@@ -110,6 +113,9 @@ export default function NotesScreen({ navigation, route }) {
         }}
       >
         <Text style={{ fontSize: 16, textAlig: "left" }}>{item.title}</Text>
+        <Text style={{ fontSize: 16, textAlig: "left" }}>
+          {item.startingTime}
+        </Text>
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
           <Ionicons name="trash" size={16} color="#944" />
         </TouchableOpacity>

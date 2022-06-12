@@ -11,6 +11,22 @@ import {
 export default function AddScreen({ navigation }) {
   //create a state variable to keep track of the text input
   const [text, setText] = useState("");
+  const [sTime, setSTime] = useState("");
+
+  const [event, setEvent] = useState([
+    { title: "IPT Test", startingTime: "10:00" },
+  ]);
+
+  function addEvent() {
+    setEvent([
+      ...event,
+      {
+        title: text,
+        startingTime: sTime,
+      },
+    ]);
+    navigation.navigate("Notes", event);
+  }
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -25,12 +41,20 @@ export default function AddScreen({ navigation }) {
           setText(newText);
         }}
       />
+      <TextInput
+        placeholder="Start Time"
+        style={styles.textInput}
+        value={sTime}
+        onChangeText={(newText) => {
+          setSTime(newText);
+        }}
+      />
       {/* onChangeText allow u to update the text input */}
       {/* navigation.goback dismiss the popup */}
       <View style={styles.buttons}>
         <TouchableOpacity
           style={[styles.button, styles.submitButton]}
-          onPress={() => navigation.navigate("Notes", { text })} //pass this parameter back to the notes screen
+          onPress={addEvent} //pass this parameter back to the notes screen
         >
           <Text style={styles.buttonText}>Add</Text>
         </TouchableOpacity>
