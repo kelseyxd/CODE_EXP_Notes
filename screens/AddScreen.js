@@ -13,17 +13,16 @@ export default function AddScreen({ navigation }) {
 	const [text, setText] = useState("");
 	const [sTime, setSTime] = useState("");
 
-	const [event, setEvent] = useState([
-		{ title: "IPT Test", startingTime: "10:00", id: 0 },
-	]);
+	const [event, setEvent] = useState([]);
+
+	// { title: "Math Test", startingTime: "10:00" }
 
 	function addEvent() {
 		console.log("\nOld event array:\n", event);
-		setEvent([
-			...event,
-			{ title: text, startingTime: sTime, id: event.length },
-		]);
+		setEvent([...event, { title: text, startingTime: sTime }]);
 	}
+
+	// https://www.codegrepper.com/code-examples/javascript/callback+after+setstate+hook
 
 	// this flag is used to check if this screen is being rendered for the first time
 	const isFirstRender = useRef(true);
@@ -36,7 +35,7 @@ export default function AddScreen({ navigation }) {
 		if (!isFirstRender.current) {
 			console.log("\n'Event' state was updated");
 			console.log("\nUpdated event array:\n", event);
-			navigation.navigate("Notes", event);
+			navigation.navigate("Notes", event); // event is JS Array
 		}
 	}, [event]);
 
